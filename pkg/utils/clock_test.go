@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"capregsoft.com/NFT/pkg/utils"
+	"hackathon/pkg/utils"
 )
 
 func TestNowUnix_WhenCalled_ShouldEqualUTCToUnix(t *testing.T) {

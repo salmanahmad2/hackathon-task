@@ -6,10 +6,7 @@ package db
 
 import (
 	"fmt"
-	"log"
-	"os"
 
-	"hackathon/config"
 	"hackathon/service/models"
 
 	"github.com/jmoiron/sqlx"
@@ -31,27 +28,15 @@ type NonFungibleTokenDBImpl struct {
 }
 
 func NewNonFungibleTokenDBImpl() *NonFungibleTokenDBImpl {
-	file, err := os.OpenFile("schema.sql", os.O_RDWR|os.O_CREATE, 0644)
+	conn, err := sqlx.Connect("mysql", "database:Salman_database@123@tcp(127.0.0.1:3306)/salmanDB")
 	if err != nil {
-		log.Fatal(err)
-	}
-	config.Cfg.Writer = file
-	cfg := config.Cfg.Database
-	psqlInfo := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=%v", cfg.DbUser, cfg.Password, cfg.Host, cfg.Port, cfg.DbName, cfg.SslEnable)
-	log.Println(psqlInfo)
-	conn, err := sqlx.Connect("postgres", psqlInfo)
-	if err != nil {
-		log.Println(err)
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		//os.Exit(1)
+		fmt.Println(err)
 	} else {
-		log.Println("Connected")
+		fmt.Println("db is connected")
 	}
-
 	return &NonFungibleTokenDBImpl{
 		conn: conn,
 	}
-
 }
 
 var _ NonFungibleTokenDB = &NonFungibleTokenDBImpl{}
